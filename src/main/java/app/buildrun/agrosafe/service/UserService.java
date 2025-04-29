@@ -26,22 +26,25 @@ public class UserService {
 
     //public UUID createUser(CreateUserDto createUserDto) {
         public UUID createUser(CreateUserDto createUserDto) {
-
-
-        // DTO -> ENTITY
-        var entity = new User(
-                null,
-                createUserDto.username(),
-                createUserDto.email(),
-                createUserDto.password(),
-                Instant.now(),
-                null);
-
-        var userSaved = userRepository.save(entity);
-
-        return userSaved.getUserId();
-    
+            // Verifica se já existe um usuário com o mesmo email
+            Optional<User> existingUser = userRepository.findByEmail(createUserDto.email());
+            if (existingUser.isPresent()) {
+                throw new RuntimeException("Já existe um usuário cadastrado com esse email.");
+            }
+        
+            // DTO -> ENTITY
+            var entity = new User(
+                    null,
+                    createUserDto.username(),
+                    createUserDto.email(),
+                    createUserDto.password(),
+                    Instant.now(),
+                    null);
+        
+            var userSaved = userRepository.save(entity);
+            return userSaved.getUserId();
         }
+        
     public Optional<User> getUserById(String userId) {
         return userRepository.findById(UUID.fromString(userId));
         
