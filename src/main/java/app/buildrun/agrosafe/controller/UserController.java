@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController //com isso aqui o springboot entende que tudo que eu definir aqui é um endpoint da API
 @RequestMapping("/v1/users")
-@CrossOrigin(origins = "http://localhost:9000") 
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private UserService userService;

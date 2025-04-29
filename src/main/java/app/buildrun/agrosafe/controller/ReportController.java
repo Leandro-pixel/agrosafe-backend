@@ -13,7 +13,7 @@ import app.buildrun.agrosafe.service.ReportService;
 
 @RestController
 @RequestMapping("/v1/reports")
-@CrossOrigin(origins = "http://localhost:9000") 
+@CrossOrigin(origins = "*")
 public class ReportController {
 
     private final ReportService reportService;
