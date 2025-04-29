@@ -8,8 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Rodar o Maven para compilar a aplicação
-RUN mvn clean install
-
+RUN mvn clean install -DskipTests
 # Usar uma imagem base do OpenJDK para rodar a aplicação
 FROM openjdk:17-jdk-slim
 
@@ -17,7 +16,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copiar o JAR gerado do estágio de build para o contêiner
-COPY --from=build /app/target/agrosafe.jar /app/app.jar
+COPY --from=build /app/target/*.jar /app/app.jar
 
 # Expor a porta onde a aplicação Spring Boot vai rodar
 EXPOSE 8080
