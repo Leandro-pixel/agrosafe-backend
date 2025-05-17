@@ -24,12 +24,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody CreateUserDto createUserDto) {
-        userService.createUser(createUserDto);
-        var userId = userService.createUser(createUserDto);
-        return ResponseEntity.created(URI.create("/v1/users/" + userId.toString())).build();
-    }
+   @PostMapping
+public ResponseEntity<User> createUser(@RequestBody CreateUserDto createUserDto) {
+    var userId = userService.createUser(createUserDto); // apenas uma vez
+    return ResponseEntity.created(URI.create("/v1/users/" + userId)).build();
+}
+
     
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody CreateUserDto createUserDto) {
@@ -38,10 +38,10 @@ public class UserController {
     
         if (user.isPresent()) {
             // Cria o objeto de resposta com o UUID
-            LoginResponse loginResponse = new LoginResponse(user.get().getUserId().toString());
+            LoginResponse loginResponse = new LoginResponse(user.get().getUserId().toString(), user.get().getUsername());
             return ResponseEntity.ok(loginResponse); // Retorna a resposta no formato JSON
         } else {
-            return ResponseEntity.status(401).body(new LoginResponse("Credenciais inválidas"));
+            return ResponseEntity.status(401).body(new LoginResponse("Credenciais inválidas", ""));
         }
     }
     
